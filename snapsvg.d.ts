@@ -1,68 +1,5 @@
 
-interface SnapElement {
-	constructor();
-	getBBox():Object;
-	transform(tstr:string):SnapElement;
-	parent():SnapElement;
-	add():void;
 
-	appendTo(el:SnapElement):SnapElement;
-	prepend(el:SnapElement):SnapElement;
-	prependTo(el:SnapElement):SnapElement;
-	before(el:SnapElement):SnapElement;
-	after(el:SnapElement):SnapElement;
-	insertBefore(el:SnapElement):SnapElement;
-	insertAfter(el:SnapElement):SnapElement;
-	remove():SnapElement;
-	select(query:string):SnapElement;
-	selectAll(query:string):any;
-	asPX(attr:string,value?:string):SnapElement;
-	use():SnapElement;
-	clone():SnapElement;
-	toDefs():SnapElement;
-	pattern(x:any,y:any,width:any,height:any):SnapElement;
-	marker(x:number,y:number,width:number,height:number,refX:number,refY:number):SnapElement;
-	animation(attr:Object,duration:number,easing?:Function,callback?:Function):Object;
-	inAnim():Object;
-	animate(from:Array<number>,duration:number,easing:Function,callback:Function):Object;
-	animate(from:number,duration:number,easing:Function,callback:Function):Object;
-	stop():SnapElement;
-	data(key:string,value?:any):any;
-	removeData(key?:string):Object;
-	outerSVG():string;
-	innerSVG():string;
-
-	click(handler:Function):Object;
-	unclick(handler:Function):Object;
-	dblclick(handler:Function):Object;
-	undblclick(handler:Function):Object;
-	mousedown(handler:Function):Object;
-	unmousedown(handler:Function):Object;
-	mousemove(handler:Function):Object;
-	unmousemove(handler:Function):Object;
-	mouseout(handler:Function):Object;
-	unmouseout(handler:Function):Object;
-	mouseover(handler:Function):Object;
-	unmouseover(handler:Function):Object;
-	mouseup(handler:Function):Object;
-	unmouseup(handler:Function):Object;
-	touchstart(handler:Function):Object;
-	untouchstart(handler:Function):Object;
-	touchmove(handler:Function):Object;
-	untouchmove(handler:Function):Object;
-	touchend(handler:Function):Object;
-	untouchend(handler:Function):Object;
-	touchcancel(handler:Function):Object;
-	untouchcancel(handler:Function):Object;
-	hover(f_in:Function,f_out:Function,icontext?:Object,ocontext?:Object):Object;
-	unhover(f_in:Function,f_out:Function):Object;
-	drag(onmove:Function,onstart:Function,onend:Function,mcontext?:Object,scontext?:Object,econtext?:Object):Object;
-	undrag():void;
-
-	getTotalLength():number;
-	getPointAtLength(length:number):Object;
-	getSubpath(from:number,to:number):string;
-}
 
 interface Filter {
 	blur(x:number,y?:number):string;
@@ -98,15 +35,6 @@ interface Path {
 	map(path:string,matrix:Object):string;
 }
 
-//interface Set<T> {
-//	push(...args:any[]):SnapElement;
-//	pop(...args:any[]):SnapElement;
-//	forEach(callback:Function,thisArg:Object):Object;
-//	clear();
-//	splice(index:number,cont:number,insertion?:Object[]):Object;
-//	exclude(element:SnapElement):boolean;
-//}
-
 interface Matrix {
 	add(a:number,b:number,c:number,d:number,e:number,f:number):void;
 	add(matrix:Matrix):void;
@@ -128,12 +56,14 @@ interface Matrix {
 
 
 interface Fragment {
-	select():SnapElement;
-	selectAll():SnapElement;
+	select():Snap.Element;
+	selectAll():Snap.Element;
 }
 
-interface Paper {
-	el(name:string, attr:Object):SnapElement;
+interface Paper extends Snap.Element {
+
+
+	el(name:string, attr:Object):Snap.Element;
 	rect(x:number,y:number,width:number,height:number,rx?:number,ry?:number):Object;
 	circle(x:number,y:number,r:number):Object;
 	image(src:string,x:number,y:number,width:number,height:number):Object;
@@ -147,9 +77,8 @@ interface Paper {
 	polyline(varargs:any[]):Object;
 	polygon(varargs:any[]):Object;
 	gradient(gradient:string):Object;
+	filter(filstr:string):Snap.Element;
 	clear():void;
-	select(query:string):SnapElement;
-	selectAll(query:string):any;
 }
 
 interface mina {
@@ -168,51 +97,127 @@ interface mina {
 	filter(filstr:string):Object;
 }
 
-declare class Snap {
-	constructor(width:number,height:number);
-	constructor(query:string);
-	constructor(DOM:any);
-	filter:Filter;
-	path:Path;
+declare function Snap(width:number,height:number):Paper;
+declare function Snap(query:string):Paper;
+declare function Snap(DOM:any):Paper;
 
-	format(token:string,json:Object):string;
-	rad(deg:number):number;
-	deg(rad:number):number;
-	angle(x1:number,y1:number,x2:number,y2:number,x3?:number,y3?:number):number;
-	is(o:any,type:string):boolean;
-	snapTo(values:Array<number>,value:number,tolerance?:number):number;
+declare module Snap {
+	export var filter:Filter;
+	export var path:Path;
 
-	Matrix(a:number,b:number,c:number,d:number,e:number,f:number):Matrix;
-	Matrix(svgMatrix:SVGMatrix):Matrix;
+	export function format(token:string,json:Object):string;
+	export function rad(deg:number):number;
+	export function deg(rad:number):number;
+	export function angle(x1:number,y1:number,x2:number,y2:number,x3?:number,y3?:number):number;
+	export function is(o:any,type:string):boolean;
+	export function snapTo(values:Array<number>,value:number,tolerance?:number):number;
 
-	getRGB(color:string):Object;
-	hsb(h:number,s:number,b:number):string;
-	hsl(h:number,s:number,l:number):string;
-	rgb(r:number,g:number,b:number):string;
-	color(clr:string):Object;
-	hsb2rgb(h:number,s:number,v:number):Object;
-	hsl2rgb(h:number,s:number,l:number):Object;
-	rgb2hsb(r:number,g:number,b:number):Object;
-	rgb2hsl(r:number,g:number,b:number):Object;
+	export function Matrix(a:number,b:number,c:number,d:number,e:number,f:number):Matrix;
+	export function Matrix(svgMatrix:SVGMatrix):Matrix;
 
-	parsePathString(pathString:string):Array<any>;
-	parsePathString(pathString:Array<string>):Array<any>;
-	parseTransformString(TString:string):Array<any>;
-	parseTransformString(TString:Array<string>):Array<any>;
-	select(query:string):SnapElement;
-	selectAll(query:string):any;
-	attr(params:string):any;
-	attr(params:Object):any;
-	animate(from:number,to:number,setter:Function,duration:number,easing:Function,callback:Function):Object;
-	animate(from:Array<number>,to:Array<number>,setter:Function,duration:number,easing:Function,callback:Function):Object;
-	animate(from:number,to:Array<number>,setter:Function,duration:number,easing:Function,callback:Function):Object;
-	animate(from:Array<number>,to:number,setter:Function,duration:number,easing:Function,callback:Function):Object;
-	parse(svg:string):Fragment;
-	fragment(varargs:any):Fragment;
-	ajax(url:string,postData:string,callback:Function,scope?:Object):XMLHttpRequest;
-	ajax(url:string,postData:Object,callback:Function,scope?:Object):XMLHttpRequest;
-	ajax(url:string,callback:Function,scope?:Object):XMLHttpRequest;
-	load(url:string,callback:Function,scope?:Object):XMLHttpRequest;
-	getElementByPoint(x:number,y:number):Object;
-	plugin(f:Function):void;
+	export function getRGB(color:string):Object;
+	export function hsb(h:number,s:number,b:number):string;
+	export function hsl(h:number,s:number,l:number):string;
+	export function rgb(r:number,g:number,b:number):string;
+	export function color(clr:string):Object;
+	export function hsb2rgb(h:number,s:number,v:number):Object;
+	export function hsl2rgb(h:number,s:number,l:number):Object;
+	export function rgb2hsb(r:number,g:number,b:number):Object;
+	export function rgb2hsl(r:number,g:number,b:number):Object;
+
+	export function parsePathString(pathString:string):Array<any>;
+	export function parsePathString(pathString:Array<string>):Array<any>;
+	export function parseTransformString(TString:string):Array<any>;
+	export function parseTransformString(TString:Array<string>):Array<any>;
+	export function select(query:string):Snap.Element;
+	export function selectAll(query:string):any;
+	export function attr(params:string):any;
+	export function attr(params:Object):any;
+	export function animate(from:number,to:number,setter:Function,duration:number,easing:Function,callback:Function):Object;
+	export function animate(from:Array<number>,to:Array<number>,setter:Function,duration:number,easing:Function,callback:Function):Object;
+	export function animate(from:number,to:Array<number>,setter:Function,duration:number,easing:Function,callback:Function):Object;
+	export function animate(from:Array<number>,to:number,setter:Function,duration:number,easing:Function,callback:Function):Object;
+	export function parse(svg:string):Fragment;
+	export function fragment(varargs:any):Fragment;
+	export function ajax(url:string,postData:string,callback:Function,scope?:Object):XMLHttpRequest;
+	export function ajax(url:string,postData:Object,callback:Function,scope?:Object):XMLHttpRequest;
+	export function ajax(url:string,callback:Function,scope?:Object):XMLHttpRequest;
+	export function load(url:string,callback:Function,scope?:Object):XMLHttpRequest;
+	export function getElementByPoint(x:number,y:number):Object;
+	export function plugin(f:Function):void;
+
+	export interface Element {
+		constructor();
+		getBBox():Object;
+		transform(tstr:string):Snap.Element;
+		parent():Snap.Element;
+		add():void;
+
+		append(el:Snap.Element):Snap.Element;
+		appendTo(el:Snap.Element):Snap.Element;
+		prepend(el:Snap.Element):Snap.Element;
+		prependTo(el:Snap.Element):Snap.Element;
+		before(el:Snap.Element):Snap.Element;
+		after(el:Snap.Element):Snap.Element;
+		insertBefore(el:Snap.Element):Snap.Element;
+		insertAfter(el:Snap.Element):Snap.Element;
+		remove():Snap.Element;
+		select(query:string):Snap.Element;
+		selectAll(query:string):any;
+		asPX(attr:string,value?:string):Snap.Element;
+		use():Snap.Element;
+		clone():Snap.Element;
+		toDefs():Snap.Element;
+		pattern(x:any,y:any,width:any,height:any):Snap.Element;
+		marker(x:number,y:number,width:number,height:number,refX:number,refY:number):Snap.Element;
+		animation(attr:Object,duration:number,easing?:Function,callback?:Function):Object;
+		inAnim():Object;
+		animate(from:Array<number>,duration:number,easing:Function,callback:Function):Object;
+		animate(from:number,duration:number,easing:Function,callback:Function):Object;
+		stop():Snap.Element;
+		data(key:string,value?:any):any;
+		removeData(key?:string):Object;
+		outerSVG():string;
+		innerSVG():string;
+
+		click(handler:Function):Object;
+		unclick(handler:Function):Object;
+		dblclick(handler:Function):Object;
+		undblclick(handler:Function):Object;
+		mousedown(handler:Function):Object;
+		unmousedown(handler:Function):Object;
+		mousemove(handler:Function):Object;
+		unmousemove(handler:Function):Object;
+		mouseout(handler:Function):Object;
+		unmouseout(handler:Function):Object;
+		mouseover(handler:Function):Object;
+		unmouseover(handler:Function):Object;
+		mouseup(handler:Function):Object;
+		unmouseup(handler:Function):Object;
+		touchstart(handler:Function):Object;
+		untouchstart(handler:Function):Object;
+		touchmove(handler:Function):Object;
+		untouchmove(handler:Function):Object;
+		touchend(handler:Function):Object;
+		untouchend(handler:Function):Object;
+		touchcancel(handler:Function):Object;
+		untouchcancel(handler:Function):Object;
+		hover(f_in:Function,f_out:Function,icontext?:Object,ocontext?:Object):Object;
+		unhover(f_in:Function,f_out:Function):Object;
+		drag(onmove:Function,onstart:Function,onend:Function,mcontext?:Object,scontext?:Object,econtext?:Object):Object;
+		undrag():void;
+
+		getTotalLength():number;
+		getPointAtLength(length:number):Object;
+		getSubpath(from:number,to:number):string;
+	}
+
+	export interface Set {
+		push(...args:any[]):Snap.Element;
+		pop(...args:any[]):Snap.Element;
+		forEach(callback:Function,thisArg:Object):Object;
+		clear();
+		splice(index:number,cont:number,insertion?:Object[]):Object;
+		exclude(element:Snap.Element):boolean;
+	}
 }
