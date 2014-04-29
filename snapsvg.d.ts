@@ -1,4 +1,9 @@
+// Type definitions for Snap.svg Javascript SVG library 0.2.0
+// Project: http://snapsvg.io/
+// Definitions by: Kenneth M <https://github.com/rethinkflash>
 
+// JavaScript Docs http://snapsvg.io/docs
+// Version 0.2.0 (TypeScript 1.0)
 
 
 interface Filter {
