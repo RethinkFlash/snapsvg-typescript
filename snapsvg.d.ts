@@ -99,7 +99,7 @@ interface mina {
 
 declare function Snap(width:number,height:number):Paper;
 declare function Snap(query:string):Paper;
-declare function Snap(DOM:any):Paper;
+declare function Snap(DOM:SVGElement):Paper;
 
 declare module Snap {
 	export var filter:Filter;
