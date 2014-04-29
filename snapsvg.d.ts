@@ -53,8 +53,6 @@ interface Matrix {
 
 }
 
-
-
 interface Fragment {
 	select():Snap.Element;
 	selectAll():Snap.Element;
@@ -81,20 +79,20 @@ interface Paper extends Snap.Element {
 	clear():void;
 }
 
-interface mina {
-	constructor(a:number, A:number, b:number, B:number, get:Function, set:Function, easing?:Function);
+declare function mina(a:number, A:number, b:number, B:number, get:Function, set:Function, easing?:Function):Object;
+declare module mina {
 
-	time():number;
-	getById(id:string):Object;
-	linear(n:number):number;
-	easeout(n:number):number;
-	easein(n:number):number;
-	easeinout(n:number):number;
-	backin(n:number):number;
-	backout(n:number):number;
-	elastic(n:number):number;
-	bounce(n:number):number;
-	filter(filstr:string):Object;
+	export function time():number;
+	export function getById(id:string):Object;
+	export function linear(n:number):number;
+	export function easeout(n:number):number;
+	export function easein(n:number):number;
+	export function easeinout(n:number):number;
+	export function backin(n:number):number;
+	export function backout(n:number):number;
+	export function elastic(n:number):number;
+	export function bounce(n:number):number;
+	export function filter(filstr:string):Object;
 }
 
 declare function Snap(width:number,height:number):Paper;
@@ -172,8 +170,9 @@ declare module Snap {
 		marker(x:number,y:number,width:number,height:number,refX:number,refY:number):Snap.Element;
 		animation(attr:Object,duration:number,easing?:Function,callback?:Function):Object;
 		inAnim():Object;
-		animate(from:Array<number>,duration:number,easing:Function,callback:Function):Object;
-		animate(from:number,duration:number,easing:Function,callback:Function):Object;
+		animate(attrs:Object,duration:number,easing?:Function,callback?:Function):Snap.Element;
+//		animate(from:Array<number>,duration:number,easing:Function,callback:Function):Object;
+//		animate(from:number,duration:number,easing:Function,callback:Function):Object;
 		stop():Snap.Element;
 		data(key:string,value?:any):any;
 		removeData(key?:string):Object;
